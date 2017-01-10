@@ -7,6 +7,7 @@ from openerp.tests import common
 @common.at_install(False)
 @common.post_install(True)
 class BusinessRequirementTestCase(common.TransactionCase):
+
     def setUp(self):
         super(BusinessRequirementTestCase, self).setUp()
         self.ProjectObj = self.env['project.project']

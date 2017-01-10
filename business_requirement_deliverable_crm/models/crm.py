@@ -38,16 +38,23 @@ class CrmLead(models.Model):
         for case in self:
             partner = case.partner_id
             pricelist = partner.property_product_pricelist.id
+            fpos = partner.property_account_position_id\
+                and partner.property_account_position_id.id or False
+            payment_term = partner.property_payment_term_id\
+                and partner.property_payment_term_id.id or False
             invoice = partner.address_get(['invoice'])['invoice']
             delivery = partner.address_get(['delivery'])['delivery']
             vals = {
                 'origin': _('Opportunity: %s') % str(case.id),
+                'team_id': case.team_id and case.team_id.id or False,
                 'tag_ids': [(6, 0, [tag_id.id for tag_id in case.tag_ids])],
                 'partner_id': partner.id,
                 'pricelist_id': pricelist,
                 'partner_invoice_id': invoice,
                 'partner_shipping_id': delivery,
                 'date_order': datetime.now(),
+                'fiscal_position': fpos,
+                'payment_term': payment_term,
                 'note': case.description,
             }
             if partner.id:
