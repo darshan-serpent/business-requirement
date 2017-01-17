@@ -183,8 +183,8 @@ class BusinessRequirement(models.Model):
                 br.resource_task_total = sum(
                     br.mapped('deliverable_lines').mapped(
                         'resource_ids').filtered(
-                            lambda r: r.resource_type == 'task').mapped(
-                                'price_total'))
+                        lambda r: r.resource_type == 'task').mapped(
+                        'price_total'))
 
     @api.multi
     @api.depends('deliverable_lines')
@@ -194,8 +194,8 @@ class BusinessRequirement(models.Model):
                 br.resource_procurement_total = sum(
                     br.mapped('deliverable_lines').mapped(
                         'resource_ids').filtered(
-                            lambda r: r.resource_type == 'procurement').mapped(
-                                'price_total'))
+                        lambda r: r.resource_type == 'procurement').mapped(
+                        'price_total'))
 
     @api.multi
     @api.depends(
