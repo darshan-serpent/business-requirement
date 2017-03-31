@@ -1,92 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
+	<data>
 
-        <record id="view_business_requirement_form" model="ir.ui.view">
-            <field name="name">business.requirement.form</field>
-            <field name="model">business.requirement</field>
-            <field name="inherit_id" ref="business_requirement.view_business_requirement_form"/>
-            <field name="arch" type="xml">
-                <xpath expr='//page[@string="Business Requirement"]' position='after'>
-                    <page string="Deliverable Lines">
-                        <field name="deliverable_lines" domain="[('business_requirement_line_id', '='. False)]" context="{'tree_view_ref':'business_requirement_deliverable.view_business_requirement_deliverable_tree', 'form_view_ref': 'business_requirement_deliverable.view_business_requirement_deliverable_form',}"/>
-                    </page>
-                </xpath>
-            </field>
-        </record>
+		<record id="view_business_requirement_form" model="ir.ui.view">
+			<field name="name">business.requirement.form</field>
+			<field name="model">business.requirement</field>
+			<field name="inherit_id"
+				ref="business_requirement.view_business_requirement_form" />
+			<field name="arch" type="xml">
+				<xpath expr='//div[@name="buttons"]' position='inside'>
+					<button class="oe_inline oe_stat_button" string="Deliverable Lines"
+						type="object" name="open_deliverable_line" icon="fa-bars">
+					</button>
+					<button class="oe_inline oe_stat_button" string="Resource Lines"
+						type="object" name="open_resource_line" icon="fa-bars">
+					</button>
+				</xpath>
+				<xpath expr='//page[@string="Business Requirement"]' position='after'>
+					<page string="Deliverable Lines">
+						<field
+							name="deliverable_lines"
+							domain="[('business_requirement_line_id', '='. False)]"
+							context="{'tree_view_ref':'business_requirement_deliverable.view_business_requirement_deliverable_tree',
+							'form_view_ref': 'business_requirement_deliverable.view_business_requirement_deliverable_form',}" />
+					</page>
+				</xpath>
+			</field>
+		</record>
 
-        <record id="view_business_requirement_tree" model="ir.ui.view">
-            <field name="name">business.requirement.tree</field>
-            <field name="model">business.requirement</field>
-            <field name="inherit_id" ref="business_requirement.view_business_requirement_tree"/>
-            <field name="arch" type="xml">
-                <xpath expr='//field[@name="change_request"]' position='after'>
-                    <field name="total_revenue"/>
-                </xpath>
-            </field>
-        </record>
 
-        <record id="view_business_requirement_deliverable_tree" model="ir.ui.view">
-            <field name="name">business.requirement.deliverable.tree</field>
-            <field name="model">business.requirement.deliverable</field>
-            <field name="arch" type="xml">
-                <tree string="Business Requirement Deliverable" default_order="sequence">
-                    <field name="currency_id" invisible="1"/>
-                    <field name="sequence" widget="handle"/>
-                    <field name="name"/>
-                    <field name="product_id"/>
-                    <field name="uom_id"/>
-                    <field name="qty"/>
-                    <field name="unit_price"/>
-                    <field name="price_total" sum="Total price"/>
-                </tree>
-            </field>
-        </record>
+		<record id="view_business_requirement_search" model="ir.ui.view">
+			<field name="name">business.requirement.search</field>
+			<field name="model">business.requirement</field>
+			<field name="inherit_id"
+				ref="business_requirement.view_business_requirement_search" />
+			<field name="arch" type="xml">
+				<xpath expr='//field[@name="name"]' position='after'>
+					<field name="state" string="State" />
+				</xpath>
+			</field>
+		</record>
 
-        <record id="view_business_requirement_resource_tree" model="ir.ui.view">
-            <field name="name">business.requirement.resource.tree</field>
-            <field name="model">business.requirement.resource</field>
-            <field name="arch" type="xml">
-                <tree string="Business Requirement Resource" editable="bottom" default_order="sequence">
-                    <field name="sequence" widget="handle"/>
-                    <field name="resource_type"/>
-                    <field name="product_id"/>
-                    <field name="name"/>
-                    <field name="user_id" attrs="{'readonly':[('resource_type','=','procurement')]}"/>
-                    <field name="qty"/>
-                    <field name="uom_id"/>
-                </tree>
-            </field>
-        </record>
+		<record id="view_business_requirement_tree" model="ir.ui.view">
+			<field name="name">business.requirement.tree</field>
+			<field name="model">business.requirement</field>
+			<field name="inherit_id"
+				ref="business_requirement.view_business_requirement_tree" />
+			<field name="arch" type="xml">
+				<xpath expr='//field[@name="change_request"]' position='after'>
+					<field name="total_revenue" />
+				</xpath>
+			</field>
+		</record>
 
-        <record id="view_business_requirement_deliverable_form" model="ir.ui.view">
-            <field name="name">business.requirement.deliverable.form</field>
-            <field name="model">business.requirement.deliverable</field>
-            <field name="type">form</field>
-            <field name="priority">20</field>
-            <field name="arch" type="xml">
-                <form string="Business Requirement Task Type">
-                    <group>
-                        <group>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="product_id"/>
-                            <label for="qty"/>
-                            <div>
-                                <field name="qty"/>
-                                <field name="uom_id" class="oe_inline"/>
-                            </div>
-                            <field name="unit_price"/>
-                            <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                        </group>
-                    </group>
-                    <label for="name"/>
-                    <field name="name"/>
-                    <group string="Resource Lines">
-                        <field name="resource_ids" context="{'tree_view_ref':'view_business_requirement_resource_tree'}" nolabel="1"/>
-                    </group>
-                </form>
-            </field>
-        </record>
+		<record id="view_business_requirement_deliverable_tree" model="ir.ui.view">
+			<field name="name">business.requirement.deliverable.tree</field>
+			<field name="model">business.requirement.deliverable</field>
+			<field name="arch" type="xml">
+				<tree string="Business Requirement Deliverable" default_order="sequence">
+					<field name="currency_id" invisible="1" />
+					<field name="sequence" widget="handle" />
+					<field name="name" />
+					<field name="product_id" />
+					<field name="uom_id" />
+					<field name="qty" />
+					<field name="unit_price" />
+					<field name="price_total" sum="Total price" />
+				</tree>
+			</field>
+		</record>
 
-    </data>
+		<record id="view_business_requirement_resource_tree" model="ir.ui.view">
+			<field name="name">business.requirement.resource.tree</field>
+			<field name="model">business.requirement.resource</field>
+			<field name="arch" type="xml">
+				<tree string="Business Requirement Resource" editable="bottom"
+					default_order="sequence">
+					<field name="sequence" widget="handle" />
+					<field name="resource_type" />
+					<field name="product_id" />
+					<field name="name" />
+					<field name="user_id"
+						attrs="{'readonly':[('resource_type','=','procurement')]}" />
+					<field name="qty" />
+					<field name="uom_id" />
+				</tree>
+			</field>
+		</record>
+
+
+		<record id="view_business_requirement_resource_form" model="ir.ui.view">
+			<field name="name">business.requirement.resource.form</field>
+			<field name="model">business.requirement.resource</field>
+			<field name="type">form</field>
+			<field name="priority">20</field>
+			<field name="arch" type="xml">
+				<form string="Business Requirement Task Type">
+					<sheet>
+						<group>
+							<field name="sequence" widget="handle" />
+							<field name="resource_type" />
+							<field name="product_id" />
+							<field name="name" />
+							<field name="user_id"
+								attrs="{'readonly':[('resource_type','=','procurement')]}" />
+							<field name="qty" />
+							<field name="uom_id" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_business_requirement_resource_search" model="ir.ui.view">
+			<field name="name">business.requirement.resource.search</field>
+			<field name="model">business.requirement.resource</field>
+			<field name="arch" type="xml">
+				<search string="Business Requirement Resource">
+					<field name="business_requirement_id" string="Business Requirement" />
+					<field name="business_requirement_partner_id" string="Customer" />
+					<field name="business_requirement_project_id" string="Project" />
+					<field name="product_id" string="Product" />
+					<group expand="0" string="Group By">
+						<filter string="Business Requirement" icon="terp-go-home"
+							context="{'group_by':'business_requirement_id'}" />
+						<filter string="Customer " icon="terp-go-home"
+							context="{'group_by':'business_requirement_partner_id'}" />
+						<filter string="Project" icon="terp-go-home"
+							context="{'group_by':'business_requirement_project_id'}" />
+						<filter string="Product" icon="terp-go-home" context="{'group_by':'product_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="view_business_requirement_deliverable_form" model="ir.ui.view">
+			<field name="name">business.requirement.deliverable.form</field>
+			<field name="model">business.requirement.deliverable</field>
+			<field name="type">form</field>
+			<field name="priority">20</field>
+			<field name="arch" type="xml">
+				<form string="Business Requirement Task Type">
+					<sheet>
+						<group>
+							<group>
+								<field name="currency_id" invisible="1" />
+								<field name="product_id" />
+								<label for="qty" />
+								<div>
+									<field name="qty" />
+									<field name="uom_id" class="oe_inline" />
+								</div>
+								<field name="unit_price" />
+								<field name="price_total" widget="monetary"
+									options="{'currency_field': 'currency_id'}" />
+							</group>
+						</group>
+						<label for="name" />
+						<field name="name" />
+						<group string="Resource Lines">
+							<field name="resource_ids"
+								context="{'tree_view_ref':'view_business_requirement_resource_tree'}"
+								nolabel="1" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="view_business_requirement_deliverable_search"
+			model="ir.ui.view">
+			<field name="name">business.requirement.deliverable.search</field>
+			<field name="model">business.requirement.deliverable</field>
+			<field name="arch" type="xml">
+				<search string="Business Requirement Deliverable">
+					<field name="business_requirement_id" string="Business Requirement" />
+					<field name="business_requirement_partner_id" string="Customer" />
+					<field name="business_requirement_project_id" string="Project" />
+					<field name="product_id" string="Product" />
+					<group expand="0" string="Group By">
+						<filter string="Business Requirement" icon="terp-go-home"
+							context="{'group_by':'business_requirement_id'}" />
+						<filter string="Customer " icon="terp-go-home"
+							context="{'group_by':'business_requirement_partner_id'}" />
+						<filter string="Project" icon="terp-go-home"
+							context="{'group_by':'business_requirement_project_id'}" />
+						<filter string="Product" icon="terp-go-home" context="{'group_by':'product_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+	</data>
 </openerp>
