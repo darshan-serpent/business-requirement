@@ -36,7 +36,13 @@ class BusinessRequirementResource(models.Model):
     user_id = fields.Many2one(
         comodel_name='res.users',
         string='Assign To',
-        ondelete='set null'
+        ondelete='set null',
+        readonly=True,
+        states={
+            'draft': [('readonly', False)],
+            'confirmed': [('readonly', False)],
+            'approved': [('readonly', False)],
+            'stakeholder_approval': [('readonly', False)]}
     )
     business_requirement_deliverable_id = fields.Many2one(
         comodel_name='business.requirement.deliverable',
@@ -107,7 +113,7 @@ class BusinessRequirementDeliverable(models.Model):
         comodel_name='business.requirement.resource',
         inverse_name='business_requirement_deliverable_id',
         string='Business Requirement Resource',
-        copy=True,
+        copy=True
     )
     business_requirement_id = fields.Many2one(
         comodel_name='business.requirement',
@@ -224,7 +230,8 @@ class BusinessRequirement(models.Model):
         string='Deliverable Lines',
         copy=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        states={'draft': [('readonly', False)],
+                'confirmed': [('readonly', False)]},
     )
     total_revenue = fields.Float(
         compute='_compute_deliverable_total',
