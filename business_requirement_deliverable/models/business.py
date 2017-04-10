@@ -11,6 +11,17 @@ class BusinessRequirementResource(models.Model):
     _name = "business.requirement.resource"
     _description = "Business Requirement Resource"
 
+
+    @api.model
+    def default_get(self, fields):
+        res = super(BusinessRequirementResource, self).default_get(fields)
+        if self._context.get('business_requirement_id'):
+            res.update({
+                'business_requirement_id':
+            self._context.get('business_requirement_id')
+            })
+        return res
+
     sequence = fields.Integer('Sequence')
     name = fields.Char('Name', required=True)
     product_id = fields.Many2one(
@@ -285,7 +296,7 @@ class BusinessRequirement(models.Model):
 
     @api.multi
     def open_deliverable_line(self):
-        domain = "[('business_requirement_line_id', '=', False)]"
+        domain = [('business_requirement_id', '=', self.id)]
         form_id = self.env.ref(
             'business_requirement_deliverable.' +
             'view_business_requirement_deliverable_form',
@@ -295,8 +306,8 @@ class BusinessRequirement(models.Model):
             'name': _('Deliverable Lines'),
             'type': 'ir.actions.act_window',
             'view_type': 'form',
-            'view_mode': 'form',
-            'views': [(form_id.id, 'form')],
+            'view_mode': 'tree,form',
+#             'views': [(form_id.id, 'form')],
             'res_model': 'business.requirement.deliverable',
             'target': 'current',
             'domain': domain,
@@ -323,7 +334,9 @@ class BusinessRequirement(models.Model):
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', res_lines.ids)],
             'context': {
-                'tree_view_ref': 'view_business_requirement_resource_tree'}
+                'tree_view_ref': 'business_requirement_deliverable.' +
+                'view_business_requirement_resource_tree',
+                'default_business_requirement_id': self.id}
         }
 
     @api.multi

@@ -22,7 +22,7 @@
 							name="deliverable_lines"
 							domain="[('business_requirement_line_id', '='. False)]"
 							context="{'tree_view_ref':'business_requirement_deliverable.view_business_requirement_deliverable_tree',
-							'form_view_ref': 'business_requirement_deliverable.view_business_requirement_deliverable_form',}" />
+							'form_view_ref': 'business_requirement_deliverable.view_business_requirement_deliverable_form'}" />
 					</page>
 				</xpath>
 			</field>
@@ -84,6 +84,7 @@
 						attrs="{'readonly':[('resource_type','=','procurement')]}" />
 					<field name="qty" />
 					<field name="uom_id" />
+					<field name="business_requirement_id"/>
 				</tree>
 			</field>
 		</record>
@@ -154,13 +155,15 @@
 								<field name="unit_price" />
 								<field name="price_total" widget="monetary"
 									options="{'currency_field': 'currency_id'}" />
+								<field name="business_requirement_id"/>
 							</group>
 						</group>
 						<label for="name" />
 						<field name="name" />
 						<group string="Resource Lines">
 							<field name="resource_ids"
-								context="{'tree_view_ref':'view_business_requirement_resource_tree'}"
+								context="{'business_requirement_id': business_requirement_id,
+								'tree_view_ref':'view_business_requirement_resource_tree'}"
 								nolabel="1" />
 						</group>
 					</sheet>
